@@ -87,7 +87,7 @@ void insertNewNode(BinaryTreeNode * current_node , BinaryTreeNode * new_node)
 
 /*--------------------------------------------------------------------------*/
 
-void insertNewNodeInTree(BinaryTree * myBinaryTree)
+void insertNewNodeInTree(BinaryTree * myBinaryTree, int * storage, int count)
 {
   char *fName,*lName,*s;
   int a, k;
@@ -109,6 +109,7 @@ void insertNewNodeInTree(BinaryTree * myBinaryTree)
 
   printf("key: \n");
   scanf("%d",&k);
+	storage[count]=k;
   BinaryTreeNode * new_node = newBinaryTreeNode(fName,lName,a,s,k);
   if(myBinaryTree->root)
   {
@@ -446,8 +447,61 @@ void mirror(BinaryTreeNode * node)
 
 /*--------------------------------------------------------------------------*/
 
+void sortArray(int * arr, int size)
+{
+	int temp;
+	for(int i=0;i<size;i++)
+	{
+		if(arr[i]>arr[i+1])
+		{
+			temp=arr[i];
+			arr[i]=arr[i+1];
+			arr[i+1]=temp;
+		}
+	}
+}
+
+/*--------------------------------------------------------------------------*/
+
+BinaryTreeNode *addNewNode_Balanced(BinaryTree* tree, int key, int choice)
+{
+	BinaryTreeNode* node = calloc(1,sizeof(BinaryTreeNode));
+	BinaryTreeNode* fnode = SearchInTree(tree->root,key, choice);
+	node->firstName = calloc(sizeof(char),15);
+	strcpy(node->firstName,fnode->firstName);
+	node->lastName = calloc(sizeof(char),15);
+	strcpy(node->lastName, fnode->lastName);
+	node->age = fnode->age;
+	node->sex = calloc(sizeof(char),1);
+	strcpy(node->sex, fnode->sex);
+	node->key = key;
+
+    return node;
+}
+
+BinaryTreeNode* sort_by_array(BinaryTree* tree,int *arr, int start, int end, int choice)
+{
+
+    if (start > end)
+		{
+			return NULL;
+		}
+
+    int mid = (start + end)/2;
+    BinaryTreeNode *node = addNewNode_Balanced(tree,arr[mid], choice);
+
+    node->right =  sort_by_array(tree, arr, start, mid-1, choice);
+
+    node->left = sort_by_array(tree, arr, mid+1, end, choice);
+
+    return node;
+}
+
+/*--------------------------------------------------------------------------*/
+
 int main()
 	{
+		int * storage;
 		double time_spent = 0.0;
 		int choice = 0;
 		int key;
@@ -466,10 +520,11 @@ int main()
 					my_binary = create_tree();
 					printf("Introduce-ti numarul de persoane : ");
 					scanf("%d",&size);
+					storage = calloc(size,sizeof(int));
 					for (int i=0;i<size;i++)
 					{
 						printf("Persoana #%d\n",i);
-						insertNewNodeInTree(my_binary);
+						insertNewNodeInTree(my_binary,storage,i);
 						printf("\n");
 					}
 			} else if(my_binary != NULL)
@@ -526,7 +581,8 @@ int main()
 	      }
 	      case 9:
 	      {
-					//Balansare
+					BinaryTreeNode *try = sort_by_array(my_binary, storage, 0, size-1,choice);
+					print2D(try);
 	        break;
 	      }
 				case 10:
@@ -539,7 +595,6 @@ int main()
 					{
 						choice = 0;
 					}
-
 					mirror(my_binary->root);
 	        break;
 	      }
