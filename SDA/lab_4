@@ -452,12 +452,25 @@ void sortArray(int * arr, int size)
 	int temp;
 	for(int i=0;i<size;i++)
 	{
-		if(arr[i]>arr[i+1])
+		for(int j=i+1;j<size;j++)
 		{
-			temp=arr[i];
-			arr[i]=arr[i+1];
-			arr[i+1]=temp;
+			if(arr[i]>arr[j])
+			{
+				temp=arr[i];
+				arr[i]=arr[j];
+				arr[j]=temp;
+			}
+
 		}
+	}
+}
+
+void printArray(int * arr, int size)
+{
+	int temp;
+	for(int i=0;i<size;i++)
+	{
+		printf("%d",arr[i]);
 	}
 }
 
@@ -490,9 +503,8 @@ BinaryTreeNode* sort_by_array(BinaryTree* tree,int *arr, int start, int end, int
     int mid = (start + end)/2;
     BinaryTreeNode *node = addNewNode_Balanced(tree,arr[mid], choice);
 
-    node->right =  sort_by_array(tree, arr, start, mid-1, choice);
-
-    node->left = sort_by_array(tree, arr, mid+1, end, choice);
+    node->left =  sort_by_array(tree, arr, start, mid-1, choice);
+    node->right = sort_by_array(tree, arr, mid+1, end, choice);
 
     return node;
 }
@@ -581,6 +593,8 @@ int main()
 	      }
 	      case 9:
 	      {
+					sortArray(storage,size);
+					//printArray(storage,size);
 					BinaryTreeNode *try = sort_by_array(my_binary, storage, 0, size-1,choice);
 					print2D(try);
 	        break;
