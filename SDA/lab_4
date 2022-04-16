@@ -87,7 +87,7 @@ void insertNewNode(BinaryTreeNode * current_node , BinaryTreeNode * new_node)
 
 /*--------------------------------------------------------------------------*/
 
-void insertNewNodeInTree(BinaryTree * myBinaryTree, int * storage, int count)
+void insertNewNodeInTree(BinaryTree * myBinaryTree, BinaryTreeNode ** storage, int count)
 {
   char *fName,*lName,*s;
   int a, k;
@@ -109,8 +109,8 @@ void insertNewNodeInTree(BinaryTree * myBinaryTree, int * storage, int count)
 
   printf("key: \n");
   scanf("%d",&k);
-	storage[count]=k;
   BinaryTreeNode * new_node = newBinaryTreeNode(fName,lName,a,s,k);
+	storage[count]= new_node;
   if(myBinaryTree->root)
   {
     insertNewNode(myBinaryTree->root, new_node);
@@ -273,6 +273,7 @@ void printTree2D(BinaryTreeNode *my_node, int space)
 		for (int i = COUNT; i < space; i++)
 		printf(" ");
 		printf("%d(%s)\n", my_node->key,my_node->firstName);
+		Beep(my_node->key*125, my_node->key*13);
 
 
 		printTree2D(my_node->left, space);
@@ -447,14 +448,22 @@ void mirror(BinaryTreeNode * node)
 
 /*--------------------------------------------------------------------------*/
 
-void sortArray(int * arr, int size)
+void sortArray(BinaryTreeNode ** arr, int size)
 {
-	int temp;
+	BinaryTreeNode * temp;
+
+	for(int i=0;i<size;i++)
+	{
+		arr[i]->left = NULL;
+		arr[i]->right = NULL;
+	}
+
+
 	for(int i=0;i<size;i++)
 	{
 		for(int j=i+1;j<size;j++)
 		{
-			if(arr[i]>arr[j])
+			if(arr[i]->key>arr[j]->key)
 			{
 				temp=arr[i];
 				arr[i]=arr[j];
@@ -465,55 +474,52 @@ void sortArray(int * arr, int size)
 	}
 }
 
-void printArray(int * arr, int size)
+void printArray(BinaryTreeNode ** arr, int size)
 {
-	int temp;
 	for(int i=0;i<size;i++)
 	{
-		printf("%d",arr[i]);
+		printf("%d - ",arr[i]->key);
 	}
 }
 
+
 /*--------------------------------------------------------------------------*/
 
-BinaryTreeNode *addNewNode_Balanced(BinaryTree* tree, int key, int choice)
+BinaryTreeNode * balanceTreeHelper(BinaryTreeNode ** storage, int start, int end, int choice)
 {
-	BinaryTreeNode* node = calloc(1,sizeof(BinaryTreeNode));
-	BinaryTreeNode* fnode = SearchInTree(tree->root,key, choice);
-	node->firstName = calloc(sizeof(char),15);
-	strcpy(node->firstName,fnode->firstName);
-	node->lastName = calloc(sizeof(char),15);
-	strcpy(node->lastName, fnode->lastName);
-	node->age = fnode->age;
-	node->sex = calloc(sizeof(char),1);
-	strcpy(node->sex, fnode->sex);
-	node->key = key;
 
-    return node;
+	if(start<end){
+		int mid = (start + end)/2;
+		BinaryTreeNode * node = storage[mid];
+	if(choice!=1)
+	{
+	node->left =  balanceTreeHelper(storage, start, mid, choice);
+	node->right = balanceTreeHelper(storage, mid+1, end, choice);
+	}
+	 else
+	{
+	node->right =  balanceTreeHelper(storage, start, mid, choice);
+	node->left = balanceTreeHelper(storage, mid+1, end, choice);
+	}
+	return node;
+} else
+{
+	return NULL;
+}
 }
 
-BinaryTreeNode* sort_by_array(BinaryTree* tree,int *arr, int start, int end, int choice)
+void balanceTree(BinaryTree * tree, BinaryTreeNode ** storage, int n, int choice)
 {
+	int start = 0, end = n, mid = (start+end)/2;
+  tree->root = balanceTreeHelper(storage, start, end, choice);
 
-    if (start > end)
-		{
-			return NULL;
-		}
-
-    int mid = (start + end)/2;
-    BinaryTreeNode *node = addNewNode_Balanced(tree,arr[mid], choice);
-
-    node->left =  sort_by_array(tree, arr, start, mid-1, choice);
-    node->right = sort_by_array(tree, arr, mid+1, end, choice);
-
-    return node;
 }
 
 /*--------------------------------------------------------------------------*/
 
 int main()
 	{
-		int * storage;
+		BinaryTreeNode ** storage = NULL;
 		double time_spent = 0.0;
 		int choice = 0;
 		int key;
@@ -532,7 +538,7 @@ int main()
 					my_binary = create_tree();
 					printf("Introduce-ti numarul de persoane : ");
 					scanf("%d",&size);
-					storage = calloc(size,sizeof(int));
+					storage = calloc(size,sizeof(BinaryTreeNode*));
 					for (int i=0;i<size;i++)
 					{
 						printf("Persoana #%d\n",i);
@@ -594,9 +600,9 @@ int main()
 	      case 9:
 	      {
 					sortArray(storage,size);
-					//printArray(storage,size);
-					BinaryTreeNode *try = sort_by_array(my_binary, storage, 0, size-1,choice);
-					print2D(try);
+					printArray(storage,size);
+					balanceTree(my_binary,storage,size,choice);
+					//print2D(my_binary);
 	        break;
 	      }
 				case 10:
