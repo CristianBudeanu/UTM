@@ -58,13 +58,13 @@ void insertion_sort()
   }
 }
 
+
+
 int main()
 {
-  int i, size=100;
-  int *arr;
   printf("-----------Start------------\n\n");
 
-    insertion_sort(arr,size);
+    insertion_sort();
 
 
 
