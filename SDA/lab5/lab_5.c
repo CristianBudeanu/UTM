@@ -73,14 +73,9 @@ void heapify(int *arr, int n, int i) {
 }
 
 // Main function to do heap sort
-void heapSort() {
-int * arr;
-int size=100;
-for (int i=0;i<4;i++)
+void heap_sort(int *arr,int size)
 {
-clock_t begin = clock();
 printf("[Heap_Sort]\nFor %d elements-\n",size);
-arr = create_init_array(size);
   for (int i = size / 2 - 1; i >= 0; i--)
   {
     heapify(arr, size, i);
@@ -94,13 +89,8 @@ arr = create_init_array(size);
     // Heapify root element to get highest element at root again
     heapify(arr, i, 0);
   }
-  clock_t end = clock();
-  float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
-  printf("The elapsed time is %f seconds\n", time_spent);
-  size = (size*100)/10;
-  free(arr);
-  }
 }
+
 
 
 int menu()
@@ -138,7 +128,6 @@ int main()
   printf("-----------Start------------\n\n");
 
     printf("\n\n\n");
-    //heapSort();
 
     int size;
     int command = 5;
@@ -203,7 +192,7 @@ choose_again:
 	      case 5:
 	      {
           clock_t begin = clock();
-          insertion_sort(array,choose[size-1]);
+          heap_sort(array,choose[size-1]);
           clock_t end = clock();
           float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
           printf("The elapsed time is %f seconds\n", time_spent);
