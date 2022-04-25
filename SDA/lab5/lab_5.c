@@ -99,14 +99,41 @@ void linear_search(int *arr, int size, int key) {
   {
     if (arr[i] == key)
     {
-      result[counter] = i;
+      result[counter] = i+1;
       counter++;
     }
   }
   printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
   print_array(result,counter);
   printf("\n");
+  free(result);
+  result = NULL;
 }
+
+void binary_search(int *arr, int start, int end, int key)
+{
+  int * result = malloc(end*sizeof(int));
+  int counter = 0;
+  while (start <= end){
+     int mid = start + (end- start)/2;
+     if (arr[mid] == key)
+     {
+       result[counter] = mid+1;
+       counter++;
+     }
+     if (arr[mid] < key)
+        start = mid + 1;
+     else
+        end = mid - 1;
+  }
+  printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
+  print_array(result,counter);
+  printf("\n");
+  free(result);
+  result = NULL;
+}
+
+
 
 
 
@@ -224,6 +251,17 @@ choose_again:
           scanf("%d",&key);
           clock_t begin = clock();
           linear_search(array,choose[size-1],key);
+          clock_t end = clock();
+          float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
+          printf("The elapsed time is %f seconds\n", time_spent);
+	        break;
+	      }
+        case 7:
+	      {
+          printf("Introduceti numerul cautat : ");
+          scanf("%d",&key);
+          clock_t begin = clock();
+          binary_search(array,0,choose[size-1],key);
           clock_t end = clock();
           float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
           printf("The elapsed time is %f seconds\n", time_spent);
