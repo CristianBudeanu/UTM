@@ -5,6 +5,7 @@
 
 int *create_init_array(int size)
 {
+  srand(time(NULL));
   int i;
   int * arr = malloc(size*sizeof(int));
 
@@ -91,6 +92,22 @@ printf("[Heap_Sort]\nFor %d elements-\n",size);
   }
 }
 
+void linear_search(int *arr, int size, int key) {
+  int * result = malloc(size*sizeof(int));
+  int counter=0;
+  for (int i = 0; i < size; i++)
+  {
+    if (arr[i] == key)
+    {
+      result[counter] = i;
+      counter++;
+    }
+  }
+  printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
+  print_array(result,counter);
+  printf("\n");
+}
+
 
 
 int menu()
@@ -105,6 +122,8 @@ menu_start:
 		printf("%+205s\n","|                   3.free_arr                     |");
     printf("%+205s\n","|                   4.insertion_sort               |");
     printf("%+205s\n","|                   5.heap_sort                    |");
+    printf("%+205s\n","|                   6.linear_search                |");
+    printf("%+205s\n","|                   7.binary_search                |");
     printf("%+205s\n","|                   0.exit                         |");
     int command = 5;
     if(error_input_found)
@@ -113,7 +132,7 @@ menu_start:
     }
     printf("\n\nCommand : ");
     scanf("%d",&command);
-    while(command>5 || command<0)
+    while(command>7 || command<0)
     {
       printf("Command does not exist .\n");
       error_input_found = 1;
@@ -129,8 +148,8 @@ int main()
 
     printf("\n\n\n");
 
-    int size;
-    int command = 5;
+    int size,key;
+    int command = 7;
     int *array = NULL;
     int choose[4] = {100,1000,10000,100000};
     while(command)
@@ -143,7 +162,7 @@ int main()
 					free(array);
 				}
 choose_again:
-					printf("Choose : \n1) 100\n2) 1000\n3) 10000\n4) 100000\n\n");
+					printf("\nChoose : \n1) 100\n2) 1000\n3) 10000\n4) 100000\n\n");
           printf("Size[1,2,3,4]: ");
 					scanf("%d",&size);
           for(int i=1;i<=4;i++)
@@ -154,8 +173,9 @@ choose_again:
               break;
             }
           }
-          if(size>4 && size<0)
+          if(size>4 || size<0)
           {
+            printf("\n|Error|\n");
             goto choose_again;
           }
 			}
@@ -193,6 +213,17 @@ choose_again:
 	      {
           clock_t begin = clock();
           heap_sort(array,choose[size-1]);
+          clock_t end = clock();
+          float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
+          printf("The elapsed time is %f seconds\n", time_spent);
+	        break;
+	      }
+        case 6:
+	      {
+          printf("Introduceti numerul cautat : ");
+          scanf("%d",&key);
+          clock_t begin = clock();
+          linear_search(array,choose[size-1],key);
           clock_t end = clock();
           float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
           printf("The elapsed time is %f seconds\n", time_spent);
