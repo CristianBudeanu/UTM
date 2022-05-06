@@ -122,9 +122,13 @@ void binary_search(int *arr, int start, int end, int key)
        counter++;
      }
      if (arr[mid] < key)
-        start = mid + 1;
+     {
+       start = mid + 1;
+     }
      else
-        end = mid - 1;
+     {
+       end = mid - 1;
+     }
   }
   printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
   print_array(result,counter);
@@ -175,7 +179,7 @@ int main()
 
     printf("\n\n\n");
 
-    int size,key;
+    int size,loops,key;
     int command = 7;
     int *array = NULL;
     int choose[4] = {100,1000,10000,100000};
@@ -247,21 +251,32 @@ choose_again:
 	      }
         case 6:
 	      {
-          printf("Introduceti numerul cautat : ");
-          scanf("%d",&key);
+          printf("\nChoose :Cautari :  \n1) 100\n2) 1000\n3) 10000\n4) 100000\n\n");
+          printf("Size[1,2,3,4]: ");
+					scanf("%d",&loops);
           clock_t begin = clock();
+          for(int i=0;i<choose[loops-1];i++)
+          {
+          key = rand() % choose[size-1] + 1;
           linear_search(array,choose[size-1],key);
-          clock_t end = clock();
-          float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
-          printf("The elapsed time is %f seconds\n", time_spent);
+          }
+        clock_t end = clock();
+        float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
+        printf("The elapsed time is %f seconds\n", time_spent);
 	        break;
 	      }
         case 7:
 	      {
-          printf("Introduceti numerul cautat : ");
-          scanf("%d",&key);
+          printf("\nChoose :Cautari :  \n1) 100\n2) 1000\n3) 10000\n4) 100000\n\n");
+          printf("Size[1,2,3,4]: ");
+          scanf("%d",&loops);
           clock_t begin = clock();
+          heap_sort(array,choose[size-1]);
+          for(int i=0;i<choose[loops-1];i++)
+          {
+          key = rand() % choose[size-1] + 1;
           binary_search(array,0,choose[size-1],key);
+          }
           clock_t end = clock();
           float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
           printf("The elapsed time is %f seconds\n", time_spent);
