@@ -99,15 +99,20 @@ void linear_search(int *arr, int size, int key) {
   {
     if (arr[i] == key)
     {
-      result[counter] = i+1;
-      counter++;
+      // result[counter] = i+1;
+      // counter++;
+      break;
+    }
+    else
+    {
+      continue;
     }
   }
-  printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
-  print_array(result,counter);
-  printf("\n");
-  free(result);
-  result = NULL;
+  // printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
+  // print_array(result,counter);
+  // printf("\n");
+  // free(result);
+  // result = NULL;
 }
 
 void binary_search(int *arr, int start, int end, int key)
@@ -118,8 +123,9 @@ void binary_search(int *arr, int start, int end, int key)
      int mid = start + (end- start)/2;
      if (arr[mid] == key)
      {
-       result[counter] = mid+1;
-       counter++;
+       // result[counter] = mid+1;
+       // counter++;
+       break;
      }
      if (arr[mid] < key)
      {
@@ -130,11 +136,11 @@ void binary_search(int *arr, int start, int end, int key)
        end = mid - 1;
      }
   }
-  printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
-  print_array(result,counter);
-  printf("\n");
-  free(result);
-  result = NULL;
+  // printf("Pozitiile pe care se afla numarul [%d] sunt : ",key);
+  // print_array(result,counter);
+  // printf("\n");
+  // free(result);
+  // result = NULL;
 }
 
 
@@ -270,8 +276,8 @@ choose_again:
           printf("\nChoose :Cautari :  \n1) 100\n2) 1000\n3) 10000\n4) 100000\n\n");
           printf("Size[1,2,3,4]: ");
           scanf("%d",&loops);
-          clock_t begin = clock();
           heap_sort(array,choose[size-1]);
+          clock_t begin = clock();
           for(int i=0;i<choose[loops-1];i++)
           {
           key = rand() % choose[size-1] + 1;
