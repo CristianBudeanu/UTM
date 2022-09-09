@@ -36,10 +36,34 @@ vector<dog> creare() {
 return created;
 }
 
+void add_element(vector<dog> &arr) {
+    dog temp = {};
+    cout << "\nIntroduceti rasa\n";
+    cin >> temp.race;
+
+    cout << "Introduceti numele\n";
+    cin >> temp.name;
+
+    cout << "Introduceti varsta\n";
+    cin >> temp.age;
+
+    arr.push_back(temp);
+}
+
+void delete_element(vector<dog> &arr) {
+    int position;
+    vector<dog> :: iterator it;
+    cout << "Introduceti nr. cainelui care doriti sa il stergeti : ";
+    cin >> position;
+    it = arr.begin()+position;
+    arr.erase(it);
+}
+
 
 void afisare(vector<dog> arr) {
     for (int i=0;i < arr.size();i++) {
-        cout << arr[i].race << endl;
+        cout << "\nCainele nr." << i;
+        cout << "\n" <<arr[i].race << endl;
         cout << arr[i].name << endl;
         cout << arr[i].age << endl;
         cout << "\n";
@@ -77,9 +101,11 @@ int menu() {
     system("CLS");
     cout << "\n\n1. Creare listei de caini.\n";
     cout << "2. Afisarea listei.\n";
-    cout << "3. Sortare.\n";
+    cout << "3. Adaugare element in lista\n";
+    cout << "4. Stergere element din lista\n";
+    cout << "5. Sortare.\n";
     cout << "0. Exit.\n";
-    int command = 3;
+    int command = 5;
     cin >> command;
     return command;
 }
@@ -87,7 +113,7 @@ int menu() {
 main() {
 
    vector<dog> dogs;
-    int command = 3;
+    int command = 5;
     while(command != 0)
     {
     command = menu();
@@ -101,6 +127,11 @@ main() {
         afisare(dogs);
         break;
     case 3:
+        add_element(dogs);
+        break;
+    case 4:
+        delete_element(dogs);
+    case 5:
         sort_by_alph(dogs);
         break;
     case 0:
