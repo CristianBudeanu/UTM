@@ -98,28 +98,46 @@ void sort_by_alph(vector<dog> &arr) {
 
 
 int menu() {
+    int error_input_found = 0;
+menu_start: 
     system("CLS");
     cout << "\n\n1. Creare listei de caini.\n";
     cout << "2. Afisarea listei.\n";
     cout << "3. Adaugare element in lista\n";
     cout << "4. Stergere element din lista\n";
     cout << "5. Sortare.\n";
+    cout << "6. Stergere lista.\n";
     cout << "0. Exit.\n";
-    int command = 5;
+    int command = 6;
     cin >> command;
+
+     while(command>6 || command<0)
+    {
+      cout << "Command does not exist .\n";
+      error_input_found = 1;
+      _getch();
+      goto menu_start;
+    }
     return command;
 }
 
 main() {
 
    vector<dog> dogs;
-    int command = 5;
+    int command = 6;
     while(command != 0)
     {
     command = menu();
     if(command == 1)
     {
-    dogs = creare();
+        if(dogs.empty() == false) {
+            dogs.clear();
+            dogs = creare();
+        }
+        else {
+            dogs = creare();
+        }
+
     }
     switch (command)
     {
@@ -133,6 +151,9 @@ main() {
         delete_element(dogs);
     case 5:
         sort_by_alph(dogs);
+        break;
+    case 6:
+        dogs.clear();
         break;
     case 0:
         exit(0);
